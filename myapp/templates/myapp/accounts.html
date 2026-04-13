@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head configuration.
+    Includes character encoding, responsive viewport settings,
+    and loading the external CSS file from Django static files.
+    -->
+    <!--Character encoding ensures proper text rendering-->
+    <meta charset="UTF-8">
+
+    <!--Allows the page to scale correctly on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Linking the main stylesheet stored in Django static directory-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section containing the main site navigation.
+    This section is reused across pages to provide consistent navigation
+    throughout the banking application.
+    -->
+    <header>
+
+        <!--Navigation bar used for moving between different pages of the application-->
+        <nav>
+
+            <!--
+            Bank logo that also works as a clickable link to the homepage.
+            The logo image is loaded from Django static assets.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation links displayed depending on authentication status.
+            Django template condition checks if the user is logged in.
+            If authenticated, show banking features. Otherwise show login/register options.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content area of the page.
+    This section displays the user's bank accounts in a structured table format.
+    -->
+    <main>
+
+        <!-- Accounts overview section -->
+        <section class="accounts-section">
+
+            <!--Page heading explaining the purpose of the page-->
+            <h2 class="accounts-title">
+                My Accounts
+            </h2>
+
+            <!--Short description for the user explaining what information is shown-->
+            <p class="accounts-description">
+                View details of your linked bank accounts, including account type,
+                current balance, and account status.
+            </p>
+
+            <!--
+            Container used to structure and style the accounts table.
+            This helps control layout and responsiveness via CSS.
+            -->
+            <section class="accounts-table-container">
+
+                <!--Table displaying account information retrieved from the backend-->
+                <table class="accounts-table">
+
+                    <!--
+                    Table header defines the column titles.
+                    These labels correspond to the account fields coming from the database.
+                    -->
+                    <thead>
+                        <tr>
+                            <th>Account Type</th>
+                            <th>Account Number</th>
+                            <th>Available Balance</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <!--
+                    Table body dynamically populated using Django template loop.
+                    Each row represents a single bank account belonging to the user.
+                    -->
+                    <tbody>
+                        
+                        {% for account in accounts %}
+                        <tr>
+
+                            <td>{{ account.account_type }}</td>
+                            <td>{{ account.account_number }}</td>
+                            <td>{{ account.balance }}</td>
+                            <td>{{ account.status }}</td>
+
+                            <td>
+                            <!--
+                            Only staff/admin users are allowed to delete accounts.
+                            The permission check ensures normal users cannot perform
+                            administrative actions.
+                            -->
+                            {% if request.user.is_staff %}
+                            <!--
+                            Form used to send a POST request to delete the account.
+                            CSRF token is included to protect against cross-site request forgery.
+                            -->
+                            <form action="{% url 'delete_account' account.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                            </form>
+                            {% else %}
+                            <!--If the user is not staff, show that deletion is not permitted-->
+                            <span>Not allowed</span>
+                            {% endif %}
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of the page.
+    Includes copyright information and a note that the website
+    is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank  
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head section.
+    Defines page metadata such as character encoding, responsive settings,
+    and loads the main CSS stylesheet from Django static files.
+    -->
+    <meta charset="UTF-8">
+
+    <!--Character encoding ensures text displays correctly-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Allows the layout to adjust properly on different screen sizes-->
+    <title>DUB Bank</title>
+
+    <!--Linking the main stylesheet stored in the Django static folder-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section used across multiple pages of the application.
+    It contains the main navigation menu and bank logo for consistent
+    site navigation.
+    -->
+    <header>
+
+        <!--Navigation bar that provides links to the main features of the application-->
+        <nav>
+
+            <!--
+            Bank logo displayed on the navigation bar.
+            The logo also works as a clickable link to return to the homepage.
+            The image is loaded using Django's static file system.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation links.
+            The menu changes depending on whether the user is logged in.
+            Django template condition checks the authentication status.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main section of the homepage.
+    This area introduces the banking application and provides a visual
+    cover image along with a short description of the platform.
+    -->
+    <main>
+
+        <!--Homepage cover section used as an introduction to the system-->
+        <section>
+            <!--
+            Cover image representing the banking application.
+            The image is stored in the static assets folder and loaded
+            using Django's static template tag.
+            -->
+            <img
+                class="site-cover-photo"
+                src="{% static 'myapp/asset/Cover_Photo.png' %}"
+                width="768"
+                height="512"
+                alt="Cover_Photo">
+                
+            <!--
+            Brief description explaining the purpose of the DUB Bank web application.
+            This provides users with an overview of the system's functionality.
+            -->
+            <p class="site-description">
+                DUB Bank is a secure and user-friendly online banking platform desinged
+                to help customers manage accounts, perform transactions, and monitor
+                finantial activity effectively from anywhere.
+            </p>
+        </section>
+
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of the page.
+    Includes copyright information and a note explaining that
+    the project is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+    
+</body>
+</html>

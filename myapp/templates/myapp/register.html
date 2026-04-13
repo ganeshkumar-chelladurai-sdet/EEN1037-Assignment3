@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head configuration.
+    Defines metadata such as character encoding, responsive layout settings,
+    and links the main CSS stylesheet from Django static files.
+    -->
+
+    <!--Character encoding ensures proper display of text-->
+    <meta charset="UTF-8">
+
+    <!--Allows responsive design so the page works on mobile and tablets-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Loading the main stylesheet stored in Django static directory-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section used across all pages in the application.
+    Contains the bank logo and navigation menu to maintain
+    consistent user navigation.
+    -->
+    <header>
+
+        <!--Navigation bar containing links to main pages-->
+        <nav>
+
+            <!--
+            Bank logo displayed in the navigation bar.
+            The logo also acts as a clickable link that returns
+            the user to the homepage.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation menu.
+            Django template logic checks if the user is authenticated.
+            Different menu options are displayed depending on login status.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main section of the page.
+    This section contains the user registration form that allows
+    new users to create an account in the banking system.
+    -->
+    <main>
+
+        <!--Registration container section-->
+        <section class="register-section">
+
+            <!--Page heading explaining the purpose of the page-->
+            <h2 class="register-title">Create Your DUB Bank Account</h2>
+
+            <!--Short description guiding new users-->
+            <p class="register-description">
+                Register for a new DUB Bank account to access secure online banking,
+                manage your finances, and perform transactions with ease.
+            </p>
+
+            <!--
+            Registration form.
+            The POST method is used because user data is being submitted
+            to the server to create a new account.
+            -->
+            <form class="register-form" method="POST">
+
+                <!--
+                CSRF token is required for security in Django forms.
+                It prevents Cross-Site Request Forgery attacks.
+                -->
+                {% csrf_token %}
+
+                <!--Full Name input field-->
+                <label for="fullname">Full Name</label>
+                <input
+                    type="text"
+                    id="fullname"
+                    name="fullname"
+                    placeholder="Enter your full name"
+                    required>
+
+                <!--Email input field used for account communication-->
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required>
+
+                <!--Username field used as a unique identifier for login-->
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Choose a username"
+                    required>
+
+                <!--Password field for secure authentication-->
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required>
+
+                <!--Password confirmation field to reduce user typing errors-->
+                <label for="confirm-password">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirm-password"
+                    placeholder="Re-enter your password"
+                    required>
+
+                <!--Submit button used to send the registration form data to the server-->
+                <button type="submit" class="register-button">
+                    Register
+                </button>
+
+            </form>
+
+            <!--
+            Additional section providing a link to the login page
+            for users who already have an account.
+            -->
+            <div class="register-extra">
+                <p>
+                    Already have an account?
+                    <a href="{% url 'login' %}">Login here</a>
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!--
+    Footer section displayed at the bottom of the page.
+    Includes copyright information and clarifies that the
+    website is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+    
+</body>
+</html>

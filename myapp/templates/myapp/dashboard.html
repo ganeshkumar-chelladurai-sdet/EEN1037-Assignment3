@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head configuration.
+    Defines character encoding, responsive viewport for mobile devices,
+    and loads the external CSS stylesheet from Django static files.
+    -->
+
+    <!--Character encoding ensures proper display of text-->
+    <meta charset="UTF-8">
+
+    <!--Allows the page to adapt to different screen sizes (responsive design)-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Linking the main stylesheet stored in the Django static directory-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section containing the main navigation bar.
+    This structure is reused across multiple pages to provide
+    consistent navigation throughout the banking application.
+    -->
+    <header>
+
+        <!--Navigation bar used for accessing different features of the application-->
+        <nav>
+
+            <!--
+            Bank logo displayed in the top-left corner.
+            The logo also acts as a link back to the homepage (index page).
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation menu.
+            Links are displayed depending on whether the user is authenticated.
+            Django template condition checks the login status of the user.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content section of the page.
+    This section displays the user's dashboard overview including
+    account balances and quick activity information.
+    -->
+    <main>
+
+        <!--Dashboard overview container-->
+        <section class="dashboard-section">
+
+            <!--Main heading for the dashboard page-->
+            <h2 class="dashboard-title">
+                Account Dashboard
+            </h2>
+
+            <!--Short explanation describing the purpose of the dashboard-->
+            <p class="dashboard-description">
+                Welcome to your DUB Bank dashboard. From here, you can view your account
+                summary, recent activity, and quickly access key banking features.
+            </p>
+
+            <!--
+            Container for the dashboard summary cards.
+            Cards are used to present key financial information in a clear
+            and visually structured way.
+            -->
+            <section class="dashboard-cards">
+
+                <!--
+                Card displaying the user's main account balance.
+                In a full production system, this value would be dynamically
+                retrieved from the backend database.
+                -->
+                <article class="dashboard-card">
+                    <h3>Account Balance</h3>
+                    <p class="dashboard-value">€12,450.75</p>
+                    <p class="dashboard-label">Current Balance</p>
+                </article>
+
+                <!--
+                Card displaying the user's savings account balance.
+                Currently shown as static data for demonstration purposes
+                within the assignment project.
+                -->
+                <article class="dashboard-card">
+                    <h3>Savings Account</h3>
+                    <p class="dashboard-value">€8,300.20</p>
+                    <p class="dashboard-label">Available Savings</p>
+                </article>
+
+                <!--
+                Card showing the number of recent transactions.
+                In a real banking system this would be dynamically calculated
+                from the transaction history stored in the database.
+                -->
+                <article class="dashboard-card">
+                    <h3>Recent Transactions</h3>
+                    <p class="dashboard-value">15</p>
+                    <p class="dashboard-label">Last 30 Days</p>
+                </article>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of every page.
+    Contains copyright information and a disclaimer stating
+    that the project is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank  
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head section.
+    Defines metadata such as character encoding, responsive settings,
+    and loads the main CSS stylesheet from Django static files.
+    -->
+
+    <!--Character encoding ensures text displays properly-->
+    <meta charset="UTF-8">
+
+    <!--Viewport setting allows responsive design on mobile and tablet devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Linking the main stylesheet stored in Django's static folder-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section used across all pages of the application.
+    Contains the main navigation bar and bank logo for consistent navigation.
+    -->
+    <header>
+
+        <!--Navigation bar for accessing different pages in the application-->
+        <nav>
+
+            <!--
+            Bank logo displayed in the navigation bar.
+            Clicking the logo redirects the user to the homepage.
+            The image is loaded using Django's static file system.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation menu links.
+            The links shown depend on whether the user is authenticated.
+            Django template logic checks the login status.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content section of the page.
+    This section allows users to view and update their personal profile information.
+    -->
+    <main>
+
+        <!--Profile management container-->
+        <section class="profile-section">
+            <!--Main heading for the profile page-->
+            <h2 class="profile-title">User Profile</h2>
+            
+            <!--Short description explaining the purpose of the profile page-->
+            <p class="profile-description">
+                Manage your personal information and update account details securely.
+            </p>
+
+            <!--
+            Profile update form.
+            The form uses POST method because it modifies user data.
+            CSRF protection is included to prevent cross-site request forgery attacks.
+            -->
+            <form method="POST">
+                {% csrf_token %}
+
+            <!--
+            Profile information is displayed in a table format for clarity.
+            Each row represents a different piece of user information.
+            -->
+            <table class="profile-table">
+                <tbody>
+
+                    <!--Full name field editable by the user-->
+                    <tr>
+                        <th>Full Name</th>
+                        <td>
+                        <!--Uses Django template variable to prefill the username-->
+                        <input type="text" name="fullname" value="{{ request.user.username }}">
+                        </td>
+                    </tr>
+
+                    <!--Email field displayed as read-only information-->
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ request.user.email }}</td>
+                    </tr>
+
+                    <!--Phone number field retrieved from the user profile model-->
+                    <tr>
+                        <th>Phone</th>
+                        <td>
+                        <input type="text" name="phone" value="{{ profile.phone }}">
+                        </td>
+                    </tr>
+
+                    <!--Address field that users can update-->
+                    <tr>
+                        <th>Address</th>
+                        <td>
+                        <input type="text" name="address" value="{{ profile.address }}">
+                        </td>
+                    </tr>
+
+                    <!--Date of birth displayed from the profile model-->
+                    <!--Not editable here to prevent accidental modification-->
+                    <tr>
+                        <th>Date of Birth</th>
+                        <td>{{ profile.date_of_birth }}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <!--
+            Action buttons for profile management.
+            The update button submits the form to update profile information.
+            The change password button would normally redirect to a password update page.
+            -->
+            <div class="profile-actions">
+                <button class="btn-update">Update Profile</button>
+                <button class="btn-change-password">Change Password</button>
+            </div>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of the page.
+    Includes copyright information and a statement clarifying that
+    the project is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank. This website is developed for educational purposes as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+
+    
+</body>
+</html>

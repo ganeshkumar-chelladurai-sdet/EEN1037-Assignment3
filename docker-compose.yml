@@ -1,0 +1,46 @@
+services:
+
+  # PostgreSQL database — stores all application data
+  db:
+    image: postgres:15
+    container_name: app-db
+    restart: always
+    environment:
+      POSTGRES_DB: myappdb
+      POSTGRES_USER: myappdbuser
+      POSTGRES_PASSWORD: myappdbpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Django REST API backend — serves the REST API and admin UI
+  app-backend:
+    build: ./backend
+    container_name: app-backend
+    entrypoint: /app/docker_entrypoint.sh
+    volumes:
+      - ./backend:/app
+      - backend_storage:/app/storage
+    ports:
+      - "8081:8000"
+    environment:
+      DATABASE_URL: postgres://myappdbuser:myappdbpass@db:5432/myappdb
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_PASSWORD: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+    depends_on:
+      - db
+
+  # React/Vite frontend — serves the single-page application
+  app-frontend:
+    build: ./frontend
+    container_name: app-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - app-backend
+
+volumes:
+  postgres_data:
+  backend_storage:

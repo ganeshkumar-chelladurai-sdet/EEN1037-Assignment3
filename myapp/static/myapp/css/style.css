@@ -1,0 +1,124 @@
+/* Reset */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Common colors */
+:root {
+    --blue: #004080;
+    --light: #f9f9f9;
+    --gray: #555;
+}
+
+/* Header */
+header {
+    /*display: flex;
+    justify-content: space-between;
+    align-items: center;*/
+    padding: 10px 20px;
+    background-color: var(--blue);
+    color: white;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    color: green;
+}
+
+nav {
+    display: flex;
+    gap: 40px;
+    font-size: large;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--blue);
+    border-radius: 5px;
+}
+
+/* Sections */
+section {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Cover image */
+.cover {
+    max-width: 90%;
+    margin: 30px auto;
+    border-radius: 10px;
+}
+
+/* Text */
+.site-description,
+.page-description {
+    max-width: 800px;
+    margin: 20px auto;
+    font-size: 1.1rem;
+    color: var(--gray);
+}
+
+/* Forms */
+form {
+    max-width: 450px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 12px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover { background: #003366; }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+th { background: var(--blue); color: white; }
+
+/* Footer */
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    background: #f2f2f2;
+    border-top: 1px solid #ccc;
+}

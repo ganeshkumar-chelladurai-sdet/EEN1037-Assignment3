@@ -1,0 +1,166 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 100,
+        "fields": {
+            "username": "testadmin",
+            "email": "testadmin@example.com",
+            "password": "pbkdf2_sha256$1000000$wL7m862q1rGOYZiRhx59tD$qpRH75zd/ydX9vLsQ5PRNwJEzQWprV1R20ArJDHndmk=",
+            "is_staff": true,
+            "is_superuser": true,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 101,
+        "fields": {
+            "username": "testuser",
+            "email": "testuser@example.com",
+            "password": "pbkdf2_sha256$1000000$wL7m862q1rGOYZiRhx59tD$qpRH75zd/ydX9vLsQ5PRNwJEzQWprV1R20ArJDHndmk=",
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "myapp.userprofile",
+        "pk": 1,
+        "fields": {
+            "user": 100,
+            "phone": "0851112222",
+            "address": "1 Admin Street, Dublin",
+            "date_of_birth": "1980-06-15"
+        }
+    },
+    {
+        "model": "myapp.userprofile",
+        "pk": 2,
+        "fields": {
+            "user": 101,
+            "phone": "0859998888",
+            "address": "42 User Avenue, Cork",
+            "date_of_birth": "1995-03-22"
+        }
+    },
+    {
+        "model": "myapp.account",
+        "pk": 1,
+        "fields": {
+            "user": 100,
+            "account_number": "DUB-0001",
+            "account_type": "Current",
+            "balance": "12450.75",
+            "status": "Active"
+        }
+    },
+    {
+        "model": "myapp.account",
+        "pk": 2,
+        "fields": {
+            "user": 100,
+            "account_number": "DUB-0002",
+            "account_type": "Savings",
+            "balance": "8300.20",
+            "status": "Active"
+        }
+    },
+    {
+        "model": "myapp.account",
+        "pk": 3,
+        "fields": {
+            "user": 101,
+            "account_number": "DUB-0003",
+            "account_type": "Current",
+            "balance": "3200.00",
+            "status": "Active"
+        }
+    },
+    {
+        "model": "myapp.account",
+        "pk": 4,
+        "fields": {
+            "user": 101,
+            "account_number": "DUB-0004",
+            "account_type": "Savings",
+            "balance": "1500.00",
+            "status": "Active"
+        }
+    },
+    {
+        "model": "myapp.transfer",
+        "pk": 1,
+        "fields": {
+            "from_account": 1,
+            "to_account": 3,
+            "amount": "250.00",
+            "notes": "Monthly allowance",
+            "created_at": "2026-03-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "myapp.transfer",
+        "pk": 2,
+        "fields": {
+            "from_account": 3,
+            "to_account": 4,
+            "amount": "100.00",
+            "notes": "Savings top-up",
+            "created_at": "2026-03-15T14:30:00Z"
+        }
+    },
+    {
+        "model": "myapp.transaction",
+        "pk": 1,
+        "fields": {
+            "account": 1,
+            "transaction_type": "Transfer Out",
+            "amount": "250.00",
+            "status": "Completed",
+            "created_at": "2026-03-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "myapp.transaction",
+        "pk": 2,
+        "fields": {
+            "account": 3,
+            "transaction_type": "Transfer In",
+            "amount": "250.00",
+            "status": "Completed",
+            "created_at": "2026-03-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "myapp.transaction",
+        "pk": 3,
+        "fields": {
+            "account": 3,
+            "transaction_type": "Transfer Out",
+            "amount": "100.00",
+            "status": "Completed",
+            "created_at": "2026-03-15T14:30:00Z"
+        }
+    },
+    {
+        "model": "myapp.transaction",
+        "pk": 4,
+        "fields": {
+            "account": 4,
+            "transaction_type": "Transfer In",
+            "amount": "100.00",
+            "status": "Completed",
+            "created_at": "2026-03-15T14:30:00Z"
+        }
+    },
+    {
+        "model": "myapp.transaction",
+        "pk": 5,
+        "fields": {
+            "account": 1,
+            "transaction_type": "Deposit",
+            "amount": "5000.00",
+            "status": "Completed",
+            "created_at": "2026-02-01T09:00:00Z"
+        }
+    }
+]

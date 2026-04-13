@@ -1,0 +1,5 @@
+freezegun==1.5.5            # Let your Python tests travel through time
+ipython==9.10.0             # IPython: Productive Interactive Computing
+pytest==9.0.2               # pytest: simple powerful testing with Python
+pytest-django==4.12.0       # A Django plugin for pytest.
+pytest-cov==7.1.0           # Pytest plugin for measuring coverage.

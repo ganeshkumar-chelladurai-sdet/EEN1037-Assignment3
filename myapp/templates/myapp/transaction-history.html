@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head section.
+    Defines metadata such as character encoding, responsive layout settings,
+    and links the external CSS stylesheet from Django static files.
+    -->
+
+    <!--Character encoding ensures proper display of text-->
+    <meta charset="UTF-8">
+
+    <!--Viewport configuration allows responsive design on different devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Loading the main stylesheet from Django's static directory-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section used consistently across the website.
+    Contains the navigation bar and the bank logo to provide
+    easy access to main features of the application.
+    -->
+    <header>
+
+        <!--Navigation bar for accessing different pages-->
+        <nav>
+
+            <!--
+            Bank logo displayed in the navigation bar.
+            Clicking the logo redirects users to the homepage.
+            The image is loaded from Django static assets.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation links shown depending on the authentication status.
+            Django template condition checks whether the user is logged in.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Navigation links available to authenticated users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+
+            <!--Navigation links displayed if the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content area of the page.
+    Displays a list of past financial transactions performed by the user.
+    -->
+    <main>
+
+        <!--Transaction history container-->
+        <section class="transaction-history-section">
+            
+            <!--Page title describing the content-->
+            <h2 class="transaction-title">Transaction History</h2>
+            
+            <!--Short explanation of the purpose of this page-->
+            <p class="transaction-description">
+                Review your past transactions, including deposits, withdrawals, and transfers. Use this history to keep track of your finances.
+            </p>
+
+            <!--
+            Table displaying transaction records.
+            Each row represents one transaction retrieved from the database.
+            -->
+            <table class="transaction-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Transaction ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>From Account</th>
+                        <th>To Account</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <!--
+                Table body populated dynamically using Django template loop.
+                The 'transactions' variable is passed from the Django view
+                and contains all transaction records for the user.
+                -->
+                <tbody>
+                    {% for t in transactions %}
+
+                    <!--Each iteration creates a new table row for one transaction-->
+                    <tr>
+                        <!--Transaction date and time-->
+                        <td>{{ t.created_at }}</td>
+                        <!--Unique transaction identifier-->
+                        <td>{{ t.id }}</td>
+                        <!--Type of transaction (e.g., deposit, withdrawal, transfer)-->
+                        <td>{{ t.transaction_type }}</td>
+                        <!--Transaction amount-->
+                        <td>{{ t.amount }}</td>
+                        <!--Source account number-->
+                        <td>{{ t.account.account_number }}</td>
+                        <!--Transaction status (e.g., completed, pending)-->
+                        <td>{{ t.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
+
+
+    <!--
+    Footer section displayed at the bottom of every page.
+    Provides copyright information and indicates that
+    the project is developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head configuration.
+    Defines page metadata including character encoding,
+    responsive layout settings, and loads the main stylesheet
+    from Django's static files directory.
+    -->
+
+    <!--Character encoding ensures text displays correctly-->
+    <meta charset="UTF-8">
+
+    <!--Responsive viewport for mobile and tablet compatibility-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title shown in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Link to external CSS file stored in Django static directory-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section shared across all pages of the web application.
+    Contains the navigation menu and bank logo for consistent site navigation.
+    -->
+    <header>
+
+        <!--Navigation bar used for accessing key banking features-->
+        <nav>
+
+            <!--
+            Bank logo displayed in the navigation bar.
+            The logo also functions as a link back to the homepage.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation menu links change depending on authentication status.
+            Django template condition checks if the user is logged in.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available to authenticated users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+
+            <!--Links displayed if the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content area.
+    This section contains the form that allows users to transfer money
+    between their bank accounts.
+    -->
+    <main>
+        <!--Transfer form container-->
+        <section class="transfer-section">
+
+            <!--Page heading-->
+            <h2 class="transfer-title">Transfer Funds</h2>
+
+            <!--Description explaining the purpose of the form-->
+            <p class="transfer-description">
+                Use this secure form to transfer funds between your accounts. 
+                Ensure all details are correct before submitting.
+            </p>
+
+            <!--
+            Transfer form.
+            Uses POST method because it sends financial transaction data
+            that modifies account balances in the system.
+            -->
+            <form class="transfer-form" method="POST">
+                <!--
+                CSRF token is required in Django forms for security.
+                It prevents Cross-Site Request Forgery attacks.
+                -->
+                {% csrf_token %}
+
+                <!--
+                From Account selection.
+                Dropdown is dynamically populated with the user's accounts
+                passed from the Django view as the "accounts" context variable.
+                -->
+                <div class="form-group">
+                    <label for="from-account">From Account:</label>
+                        <select name="from_account">
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">
+                            {{ account.account_type }} - {{ account.account_number }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <option>Savings - 654321</option>
+                    </select>
+                </div>
+
+                <!--
+                To Account selection.
+                Allows the user to select the destination account for the transfer.
+                Uses the same dynamic account list from the backend.
+                -->
+                <div class="form-group">
+                    <label for="to-account">To Account:</label>
+                    <select name="to_account">
+                        {% for account in accounts %}
+                        <option value="{{ account.id }}">
+                        {{ account.account_type }} - {{ account.account_number }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!--
+                Amount input field.
+                The "number" input type ensures numeric values only.
+                "min=1" prevents zero or negative transfers.
+                "step=0.01" allows decimal values for currency.
+                -->
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" placeholder="Enter amount" min="1" step="0.01">
+                </div>
+
+                <!--
+                Optional notes field.
+                Allows users to add remarks or reference information
+                related to the transaction.
+                -->
+                <div class="form-group">
+                    <label for="notes">Notes (optional):</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Enter any remarks"></textarea>
+                </div>
+
+                <!--
+                Submit button that sends the transfer request to the server.
+                The backend view will process the transaction and update balances.
+                -->
+                <div class="form-group">
+                    <button type="submit" class="btn-transfer">Submit Transfer</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of every page.
+    Includes copyright information and clarifies that the
+    system was developed for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+    
+</body>
+</html>

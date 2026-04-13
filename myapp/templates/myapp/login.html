@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    Standard HTML head configuration.
+    Defines page metadata including character encoding,
+    responsive layout settings, and the external CSS stylesheet.
+    -->
+
+    <!--Character encoding ensures all text displays correctly-->
+    <meta charset="UTF-8">
+
+    <!--Viewport setting enables responsive layout for mobile and tablet devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Title displayed in the browser tab-->
+    <title>DUB Bank</title>
+
+    <!--Loading the main CSS stylesheet from Django static files-->
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <!--
+    Header section shared across pages.
+    Contains the navigation menu and the bank logo to maintain
+    consistent navigation throughout the web application.
+    -->
+    <header>
+
+        <!--Navigation bar providing links to key pages-->
+        <nav>
+
+            <!--
+            Bank logo shown in the navigation bar.
+            The logo also functions as a link to the homepage.
+            The image is loaded using Django's static file system.
+            -->
+            <a class="site-logo" href="{% url 'index' %}">
+                <img
+                src="{% static 'myapp/asset/DUBBank_Logo_cut.png' %}"
+                width="120"
+                height="30"
+                alt="DUB_Bank_Logo">
+            </a>
+
+            <!--
+            Navigation links displayed depending on the user's login status.
+            Django template logic checks if the user is authenticated.
+            -->
+            {% if request.user.is_authenticated %}
+
+            <!--Links available for logged-in users-->
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'accounts' %}">Accounts</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
+            <a href="{% url 'transaction_history' %}">Transaction-History</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <!--Links shown when the user is not logged in-->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+
+    </header>
+
+    <!--
+    Main content area of the page.
+    This section contains the login form that allows users
+    to authenticate and access their banking dashboard.
+    -->
+    <main>
+
+        <!--Login container section-->
+        <section class="login-section">
+
+            <!--Page heading clearly indicating the purpose of this page-->
+            <h2 class="page-title">Login to DUB Bank</h2>
+
+            <!--Short explanation guiding the user on how to log in-->
+            <p class="page-description">
+                Please enter your registered email address and password to securely
+                access your DUB Bank online banking account.
+            </p>
+
+            <!--
+            Login form.
+            Uses the POST method to securely send login credentials
+            to the Django login view defined in the project URLs.
+            -->
+            <form class="login-form" method="POST" action="{% url 'login' %}">
+
+                <!--
+                CSRF token protects the form from Cross-Site Request Forgery attacks.
+                Django requires this for all POST requests involving forms.
+                -->
+                {% csrf_token %}
+
+                <!--Email input field used as the username identifier-->
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required>
+
+                <!--Password input field for user authentication-->
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
+
+                <!--
+                Submit button that sends the login form data to the server
+                for authentication processing.
+                -->
+                <button type="submit" class="login-button">
+                    Login
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!--
+    Footer section displayed at the bottom of every page.
+    Includes copyright information and clarifies that the
+    website is created for educational purposes.
+    -->
+    <footer>
+        <p class="site-footer">
+            © 2026 DUB Bank  
+            This website is developed for educational purpose as part of a Web Application Development Assignment.
+        </p>
+    </footer>
+
+    
+</body>
+</html>
