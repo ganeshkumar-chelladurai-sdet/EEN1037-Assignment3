@@ -41,7 +41,7 @@ function HomePage() {
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <img
             className="site-cover-photo"
-            src="/dark_banking_hero_1776105318337.png"
+            src="/dark_banking_hero.png"
             alt="DUB Bank Interface preview"
             style={{ width: '100%', maxWidth: '900px', height: 'auto' }}
           />
